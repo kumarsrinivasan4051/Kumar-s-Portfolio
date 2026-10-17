@@ -1,0 +1,152 @@
+{
+  "profile": {
+    "name": "Kumar S",
+    "title": "BIM SPECIALIST - MEP",
+    "tagline": "BIM Model Coordination • Clash Detection • Workflow Automation (Dynamo/LISP) • Scan-to-BIM",
+    "email": "kumarsrinivasan4051@gmail.com",
+    "phone": "+91 8682970576",
+    "location": "Chennai, India",
+    "linkedin": "linkedin.com/in/kumarsirinivasan",
+    "website": "Revizto Expert Level 3",
+    "avatar": "",
+    "summary": "BIM Specialist with over 8 years of experience in BIM model coordination, clash detection, automation, and telecom drafting. Proficient in Revit, Navisworks, Revizto, AutoCAD, and Dynamo scripting to optimize project workflows. Adept at integrating multidisciplinary BIM models, ensuring standards compliance, issue resolution, and stakeholder communication. Strong expertise in new construction, scan-to-BIM, and telecom drafting."
+  },
+  "experience": [
+    {
+      "id": "exp-1",
+      "included": true,
+      "role": "BIM Specialist - MEP",
+      "company": "Illumine Industries Pvt Ltd",
+      "period": "2022/09 – Present",
+      "location": "Chennai, India",
+      "metrics": "Revizto & Navisworks | Multidisciplinary MEP",
+      "highlights": [
+        "BIM Model Coordination: Overseeing multidisciplinary BIM model integration for architects, MEP, and structural teams.",
+        "Clash Detection & Issue Resolution: Identifying and resolving model inconsistencies using Revizto & Navisworks.",
+        "Standards Compliance & Model Review: Ensuring accuracy, adherence to BIM standards, and maintaining data integrity.",
+        "Stakeholder Communication: Serving as the central BIM point of contact, coordinating with architects, engineers, and contractors.",
+        "Client Coordination & Design Support: Collaborating with clients to align BIM implementation with project goals.",
+        "Project Progress Tracking: Providing regular updates and assisting in design reviews with BIM data insights."
+      ]
+    },
+    {
+      "id": "exp-2",
+      "included": true,
+      "role": "Quality Checker",
+      "company": "ASE Structure Design Pvt Ltd",
+      "period": "2017/10 – 2022/08",
+      "location": "Chennai, India",
+      "metrics": "Scan-to-BIM | HVAC, Plumbing, Fire Protection & Telecom",
+      "highlights": [
+        "New Construction & Scan to BIM: Modeled HVAC, plumbing, and fire protection systems for various projects.",
+        "Telecom Drafting & Documentation: Created network layouts, antenna placements, and equipment installation drawings.",
+        "Quality Control & Compliance: Reviewed telecom infrastructure drawings for accuracy, ensuring compliance with industry standards.",
+        "Training & Team Development: Mentored junior engineers, improving team efficiency through process optimization."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-1",
+      "included": true,
+      "name": "Bispebjerg Hospital (Denmark)",
+      "category": "Healthcare BIM & Dynamo Automation",
+      "tags": ["LOD 350", "Dynamo Scripting", "Revit", "QA/QC Plugins"],
+      "metric": "LOD 350",
+      "image": "",
+      "description": "Utilized Dynamo scripts & plugins for quality control and parameter standardization, significantly improving multidisciplinary workflow efficiency.",
+      "link": ""
+    },
+    {
+      "id": "proj-2",
+      "included": true,
+      "name": "Noblesville High School (USA)",
+      "category": "MEP Construction Documentation",
+      "tags": ["LOD 400", "MEP Shop Drawings", "Revit", "Fabrication"],
+      "metric": "LOD 400",
+      "image": "",
+      "description": "Developed detailed MEP shop drawings for high-detail construction documentation and field installation.",
+      "link": ""
+    },
+    {
+      "id": "proj-3",
+      "included": true,
+      "name": "64-86 Bathurst (Canada)",
+      "category": "Large-Scale Residential Coordination",
+      "tags": ["LOD 350", "MEP Coordination", "Revizto", "Navisworks"],
+      "metric": "LOD 350",
+      "image": "",
+      "description": "Led multidisciplinary MEP coordination and clash resolution for a large-scale residential development.",
+      "link": ""
+    },
+    {
+      "id": "proj-4",
+      "included": true,
+      "name": "HLK Expansion (USA)",
+      "category": "Point Cloud Scan-to-BIM",
+      "tags": ["LOD 300", "Scan-to-BIM", "Point Cloud", "As-Built Modeling"],
+      "metric": "LOD 300",
+      "image": "",
+      "description": "Converted point cloud scans to accurate BIM models, ensuring precise representation of existing structures.",
+      "link": ""
+    },
+    {
+      "id": "proj-5",
+      "included": true,
+      "name": "Rancho Terrace Apartment Homes (USA)",
+      "category": "Electrical Engineering Documentation",
+      "tags": ["Electrical Permit Set", "Code Compliance", "AutoCAD", "Revit"],
+      "metric": "Permit Set",
+      "image": "",
+      "description": "Delivered comprehensive electrical permit drawings ensuring full compliance with local regulatory standards.",
+      "link": ""
+    },
+    {
+      "id": "proj-6",
+      "included": true,
+      "name": "Chicago Club (USA)",
+      "category": "Historic Restoration Scan-to-BIM",
+      "tags": ["LOD 200 / 350", "Scan-to-BIM", "Historic Building", "MEP Modeling"],
+      "metric": "LOD 200–350",
+      "image": "",
+      "description": "Delivered accurate MEP models from laser scan data for a complex historic building restoration.",
+      "link": ""
+    }
+  ],
+  "skills": [
+    {
+      "category": "BIM Coordination & Clash Detection",
+      "level": 96,
+      "items": ["Revizto 5", "Navisworks", "BIM 360", "Clash Resolution", "BEP Compliance", "Model Audits"]
+    },
+    {
+      "category": "Revit Family & MEP Modeling",
+      "level": 95,
+      "items": ["Revit MEP (HVAC, Plumbing, Fire, Electrical)", "Parametric Family Creation", "LOD 200–500", "Scan-to-BIM", "Shop Drawings & RFIs"]
+    },
+    {
+      "category": "Automation & Workflow Optimization",
+      "level": 90,
+      "items": ["Dynamo Scripting", "AutoLISP Automation", "Parameter Standardization", "QA/QC Process Optimization"]
+    },
+    {
+      "category": "Mechanical & CAD Tools",
+      "level": 88,
+      "items": ["AutoCAD", "Creo", "CATIA", "SolidWorks", "Telecom Infrastructure Drafting"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Engineering (B.E) - Mechanical Engineering",
+      "institution": "T.J.S Engineering College, Chennai, India",
+      "year": "2013 – 2017"
+    }
+  ],
+  "awardsAndCerts": [
+    "Certificate: Revizto Expert Level 3 Certification",
+    "Certificate: Master Diploma in CADD",
+    "Award (2025): The Shining Star (Apr–Sep 2025), Illumine Industries Pvt Ltd — Innovation in process automation (LISP/Dynamo) & team collaboration",
+    "Award (2024): The Shining Star (Apr–Sep 2024), Illumine Industries Pvt Ltd — Exceptional quality in deliverables & team coordination",
+    "Award (2019): Shining Star (2018–2019), ASE Structure Design Pvt Ltd — High-quality outputs, on-time delivery & high productivity"
+  ]
+}

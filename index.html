@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kumar S | Executive BIM Portfolio & CV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            execBg: '#F5F3EF',
+            execSurface: '#FFFFFF',
+            execText: '#1D1D1B',
+            execSecondary: '#6B6B65',
+            execAccent: '#B08D57',
+            execBorder: '#E2DDD5',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #EFECE6; }
+    ::-webkit-scrollbar-thumb { background: #C8C2B8; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #B08D57; }
+
+    /* Architectural CAD Grid in Warm Stone & Gold */
+    .exec-blueprint-grid {
+      background-color: #F5F3EF;
+      background-image:
+        linear-gradient(rgba(176, 141, 87, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(176, 141, 87, 0.14) 1px, transparent 1px),
+        linear-gradient(rgba(29, 29, 27, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(29, 29, 27, 0.04) 1px, transparent 1px);
+      background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    }
+
+    .exec-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    .exec-card:hover {
+      transform: translateY(-3px);
+      border-color: #B08D57;
+      box-shadow: 0 14px 32px -12px rgba(29, 29, 27, 0.12);
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #cv-print-sheet, #cv-print-sheet * { visibility: visible; }
+      #cv-print-sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+        margin: 0 !important;
+        border: none !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-execBg text-execText font-sans antialiased selection:bg-execAccent selection:text-white overflow-hidden h-screen flex flex-col">
+
+  <!-- TOP COMMAND BAR (ONLY IN SPLIT EDITOR MODE) -->
+  <header id="top-bar" class="no-print h-14 border-b border-execBorder bg-white/95 backdrop-blur px-4 flex items-center justify-between shrink-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded bg-execText flex items-center justify-center font-mono font-semibold text-execAccent text-xs border border-execAccent/40">
+        KS
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-sm tracking-tight text-execText">Kumar S — Executive Portfolio Studio</span>
+          <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-execBg text-execAccent border border-execAccent/30">MEP • LOD 200–500</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode Switcher -->
+    <div class="flex items-center gap-1 bg-execBg p-1 rounded border border-execBorder">
+      <button onclick="setAppMode('split')" id="btn-mode-split" class="px-3 py-1 rounded text-xs font-medium transition bg-execText text-white">
+        1. Split Editor
+      </button>
+      <button onclick="setAppMode('public')" id="btn-mode-public" class="px-3 py-1 rounded text-xs font-medium transition text-execSecondary hover:text-execText">
+        2. Public Share View
+      </button>
+    </div>
+
+    <!-- Template Selector & Export -->
+    <div class="flex items-center gap-2">
+      <div class="flex items-center bg-execBg rounded border border-execBorder p-1 text-xs">
+        <button onclick="setTemplate('3d-showcase')" id="tpl-3d-showcase" class="px-2.5 py-1 rounded bg-white text-execText shadow-sm font-medium transition">Executive 3D</button>
+        <button onclick="setTemplate('blueprint')" id="tpl-blueprint" class="px-2.5 py-1 rounded text-execSecondary hover:text-execText transition">Technical Dossier</button>
+        <button onclick="setTemplate('ats-print')" id="tpl-ats-print" class="px-2.5 py-1 rounded text-execSecondary hover:text-execText transition">A4 Print CV</button>
+      </div>
+
+      <button onclick="copyShareLink()" class="px-3 py-1.5 rounded text-xs font-mono bg-execBg hover:bg-execBorder/60 text-execText border border-execBorder transition">
+        Copy Share URL
+      </button>
+      <button onclick="downloadJSON()" class="px-3 py-1.5 rounded text-xs font-mono bg-execAccent text-white hover:opacity-90 transition">
+        Export resume.json
+      </button>
+    </div>
+  </header>
+
+  <!-- FLOATING PILL IN PUBLIC VIEW -->
+  <div id="public-floating-pill" class="no-print hidden fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-white/95 backdrop-blur-md border border-execBorder px-3.5 py-2 rounded-full shadow-xl">
+    <span class="text-[11px] font-mono uppercase text-execSecondary">View:</span>
+    <button onclick="setTemplate('3d-showcase')" class="text-xs px-2 py-0.5 rounded hover:bg-execBg text-execText font-mono font-medium">Executive 3D</button>
+    <button onclick="setTemplate('blueprint')" class="text-xs px-2 py-0.5 rounded hover:bg-execBg text-execText font-mono font-medium">Dossier</button>
+    <button onclick="setTemplate('ats-print')" class="text-xs px-2 py-0.5 rounded hover:bg-execBg text-execAccent font-mono font-semibold">A4 Print CV</button>
+    <div class="h-3 w-[1px] bg-execBorder"></div>
+    <button onclick="setAppMode('split')" class="text-xs text-white font-medium px-2.5 py-0.5 bg-execText rounded-full">Editor</button>
+  </div>
+
+  <!-- MAIN WORKSPACE -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- LEFT PANE: MASTER DATA EDITOR -->
+    <aside id="editor-pane" class="no-print w-full md:w-[440px] lg:w-[480px] border-r border-execBorder bg-[#EFECE6] flex flex-col shrink-0 h-full overflow-hidden">
+      <!-- Editor Tabs -->
+      <div class="flex border-b border-execBorder bg-white/70 px-2 pt-2 gap-1 text-xs font-medium overflow-x-auto shrink-0">
+        <button onclick="setEditorTab('profile')" id="etab-profile" class="px-3 py-2 rounded-t border-b-2 border-execAccent text-execText font-semibold bg-[#EFECE6]">Profile & Photo</button>
+        <button onclick="setEditorTab('experience')" id="etab-experience" class="px-3 py-2 rounded-t border-b-2 border-transparent text-execSecondary hover:text-execText">Experience</button>
+        <button onclick="setEditorTab('projects')" id="etab-projects" class="px-3 py-2 rounded-t border-b-2 border-transparent text-execSecondary hover:text-execText">BIM Projects</button>
+        <button onclick="setEditorTab('skills')" id="etab-skills" class="px-3 py-2 rounded-t border-b-2 border-transparent text-execSecondary hover:text-execText">Skills & Awards</button>
+        <button onclick="setEditorTab('raw')" id="etab-raw" class="px-3 py-2 rounded-t border-b-2 border-transparent text-execSecondary hover:text-execText font-mono">JSON</button>
+      </div>
+
+      <!-- Editor Form Content -->
+      <div id="editor-content" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm"></div>
+
+      <!-- Editor Footer -->
+      <div class="p-3 border-t border-execBorder bg-white flex items-center justify-between text-xs text-execSecondary shrink-0">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-execAccent"></span>
+          <span>Saved in browser • Export JSON for GitHub</span>
+        </span>
+        <button onclick="resetToDefault()" class="text-execSecondary hover:text-execText underline">Reset Data</button>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANE: LIVE PORTFOLIO VIEWPORT -->
+    <main id="preview-pane" class="flex-1 h-full overflow-y-auto relative bg-execBg">
+      <div id="portfolio-mount" class="min-h-full w-full"></div>
+    </main>
+
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden bg-execText text-white font-medium px-4 py-2 rounded-full shadow-lg text-xs font-mono border border-execAccent"></div>
+
+  <script>
+    // =========================================================================
+    // 1. MASTER RESUME DATA (WITH IMAGE SLOTS FOR FUTURE USE)
+    // =========================================================================
+    const DEFAULT_RESUME_DATA = {
+      profile: {
+        name: "Kumar S",
+        title: "BIM SPECIALIST - MEP",
+        tagline: "BIM Model Coordination • Clash Detection • Workflow Automation (Dynamo/LISP) • Scan-to-BIM",
+        email: "kumarsrinivasan4051@gmail.com",
+        phone: "+91 8682970576",
+        location: "Chennai, India",
+        linkedin: "linkedin.com/in/kumarsirinivasan",
+        website: "Revizto Expert Level 3",
+        avatar: "",
+        summary: "BIM Specialist with over 8 years of experience in BIM model coordination, clash detection, automation, and telecom drafting. Proficient in Revit, Navisworks, Revizto, AutoCAD, and Dynamo scripting to optimize project workflows. Adept at integrating multidisciplinary BIM models, ensuring standards compliance, issue resolution, and stakeholder communication. Strong expertise in new construction, scan-to-BIM, and telecom drafting."
+      },
+      experience: [
+        {
+          id: "exp-1",
+          included: true,
+          role: "BIM Specialist - MEP",
+          company: "Illumine Industries Pvt Ltd",
+          period: "2022/09 – Present",
+          location: "Chennai, India",
+          metrics: "Revizto & Navisworks | Multidisciplinary MEP",
+          highlights: [
+            "BIM Model Coordination: Overseeing multidisciplinary BIM model integration for architects, MEP, and structural teams.",
+            "Clash Detection & Issue Resolution: Identifying and resolving model inconsistencies using Revizto & Navisworks.",
+            "Standards Compliance & Model Review: Ensuring accuracy, adherence to BIM standards, and maintaining data integrity.",
+            "Stakeholder Communication: Serving as the central BIM point of contact, coordinating with architects, engineers, and contractors.",
+            "Client Coordination & Design Support: Collaborating with clients to align BIM implementation with project goals.",
+            "Project Progress Tracking: Providing regular updates and assisting in design reviews with BIM data insights."
+          ]
+        },
+        {
+          id: "exp-2",
+          included: true,
+          role: "Quality Checker",
+          company: "ASE Structure Design Pvt Ltd",
+          period: "2017/10 – 2022/08",
+          location: "Chennai, India",
+          metrics: "Scan-to-BIM | HVAC, Plumbing, Fire Protection & Telecom",
+          highlights: [
+            "New Construction & Scan to BIM: Modeled HVAC, plumbing, and fire protection systems for various projects.",
+            "Telecom Drafting & Documentation: Created network layouts, antenna placements, and equipment installation drawings.",
+            "Quality Control & Compliance: Reviewed telecom infrastructure drawings for accuracy, ensuring compliance with industry standards.",
+            "Training & Team Development: Mentored junior engineers, improving team efficiency through process optimization."
+          ]
+        }
+      ],
+      projects: [
+        {
+          id: "proj-1",
+          included: true,
+          name: "Bispebjerg Hospital (Denmark)",
+          category: "Healthcare BIM & Dynamo Automation",
+          tags: ["LOD 350", "Dynamo Scripting", "Revit", "QA/QC Plugins"],
+          metric: "LOD 350",
+          image: "",
+          description: "Utilized Dynamo scripts & plugins for quality control and parameter standardization, significantly improving multidisciplinary workflow efficiency.",
+          link: ""
+        },
+        {
+          id: "proj-2",
+          included: true,
+          name: "Noblesville High School (USA)",
+          category: "MEP Construction Documentation",
+          tags: ["LOD 400", "MEP Shop Drawings", "Revit", "Fabrication"],
+          metric: "LOD 400",
+          image: "",
+          description: "Developed detailed MEP shop drawings for high-detail construction documentation and field installation.",
+          link: ""
+        },
+        {
+          id: "proj-3",
+          included: true,
+          name: "64-86 Bathurst (Canada)",
+          category: "Large-Scale Residential Coordination",
+          tags: ["LOD 350", "MEP Coordination", "Revizto", "Navisworks"],
+          metric: "LOD 350",
+          image: "",
+          description: "Led multidisciplinary MEP coordination and clash resolution for a large-scale residential development.",
+          link: ""
+        },
+        {
+          id: "proj-4",
+          included: true,
+          name: "HLK Expansion (USA)",
+          category: "Point Cloud Scan-to-BIM",
+          tags: ["LOD 300", "Scan-to-BIM", "Point Cloud", "As-Built Modeling"],
+          metric: "LOD 300",
+          image: "",
+          description: "Converted point cloud scans to accurate BIM models, ensuring precise representation of existing structures.",
+          link: ""
+        },
+        {
+          id: "proj-5",
+          included: true,
+          name: "Rancho Terrace Apartment Homes (USA)",
+          category: "Electrical Engineering Documentation",
+          tags: ["Electrical Permit Set", "Code Compliance", "AutoCAD", "Revit"],
+          metric: "Permit Set",
+          image: "",
+          description: "Delivered comprehensive electrical permit drawings ensuring full compliance with local regulatory standards.",
+          link: ""
+        },
+        {
+          id: "proj-6",
+          included: true,
+          name: "Chicago Club (USA)",
+          category: "Historic Restoration Scan-to-BIM",
+          tags: ["LOD 200 / 350", "Scan-to-BIM", "Historic Building", "MEP Modeling"],
+          metric: "LOD 200–350",
+          image: "",
+          description: "Delivered accurate MEP models from laser scan data for a complex historic building restoration.",
+          link: ""
+        }
+      ],
+      skills: [
+        {
+          category: "BIM Coordination & Clash Detection",
+          level: 96,
+          items: ["Revizto 5", "Navisworks", "BIM 360", "Clash Resolution", "BEP Compliance", "Model Audits"]
+        },
+        {
+          category: "Revit Family & MEP Modeling",
+          level: 95,
+          items: ["Revit MEP (HVAC, Plumbing, Fire, Electrical)", "Parametric Family Creation", "LOD 200–500", "Scan-to-BIM", "Shop Drawings & RFIs"]
+        },
+        {
+          category: "Automation & Workflow Optimization",
+          level: 90,
+          items: ["Dynamo Scripting", "AutoLISP Automation", "Parameter Standardization", "QA/QC Process Optimization"]
+        },
+        {
+          category: "Mechanical & CAD Tools",
+          level: 88,
+          items: ["AutoCAD", "Creo", "CATIA", "SolidWorks", "Telecom Infrastructure Drafting"]
+        }
+      ],
+      education: [
+        {
+          degree: "Bachelor of Engineering (B.E) - Mechanical Engineering",
+          institution: "T.J.S Engineering College, Chennai, India",
+          year: "2013 – 2017"
+        }
+      ],
+      awardsAndCerts: [
+        "Certificate: Revizto Expert Level 3 Certification",
+        "Certificate: Master Diploma in CADD",
+        "Award (2025): The Shining Star (Apr–Sep 2025), Illumine Industries Pvt Ltd — Innovation in process automation (LISP/Dynamo) & team collaboration",
+        "Award (2024): The Shining Star (Apr–Sep 2024), Illumine Industries Pvt Ltd — Exceptional quality in deliverables & team coordination",
+        "Award (2019): Shining Star (2018–2019), ASE Structure Design Pvt Ltd — High-quality outputs, on-time delivery & high productivity"
+      ]
+    };
+
+    // =========================================================================
+    // 2. STATE & URL MANAGEMENT
+    // =========================================================================
+    const STORAGE_KEY = 'kumar_bim_exec_portfolio_v2';
+    let state = JSON.parse(JSON.stringify(DEFAULT_RESUME_DATA));
+    let currentEditorTab = 'profile';
+    let currentTemplate = '3d-showcase';
+    let appMode = 'split';
+    let threeCleanup = null;
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderPreview();
+    }
+
+    function resetToDefault() {
+      if (confirm('Reset all portfolio data back to Kumar S original resume?')) {
+        state = JSON.parse(JSON.stringify(DEFAULT_RESUME_DATA));
+        saveState();
+        renderEditor();
+        showToast('Restored original resume data');
+      }
+    }
+
+    function applyUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      const tpl = params.get('template');
+      const view = params.get('view');
+      if (tpl && ['3d-showcase', 'blueprint', 'ats-print'].includes(tpl)) {
+        currentTemplate = tpl;
+      }
+      if (view === 'public') {
+        appMode = 'public';
+      }
+    }
+
+    function setAppMode(mode) {
+      appMode = mode;
+      const editorPane = document.getElementById('editor-pane');
+      const topBar = document.getElementById('top-bar');
+      const pill = document.getElementById('public-floating-pill');
+
+      if (mode === 'public') {
+        editorPane.classList.add('hidden');
+        topBar.classList.add('hidden');
+        pill.classList.remove('hidden');
+      } else {
+        editorPane.classList.remove('hidden');
+        topBar.classList.remove('hidden');
+        pill.classList.add('hidden');
+      }
+      setTimeout(() => window.dispatchEvent(new Event('resize')), 60);
+    }
+
+    function setTemplate(tpl) {
+      currentTemplate = tpl;
+      ['3d-showcase', 'blueprint', 'ats-print'].forEach(id => {
+        const btn = document.getElementById('tpl-' + id);
+        if (!btn) return;
+        if (id === tpl) {
+          btn.className = "px-2.5 py-1 rounded bg-white text-execText shadow-sm font-medium transition";
+        } else {
+          btn.className = "px-2.5 py-1 rounded text-execSecondary hover:text-execText transition";
+        }
+      });
+      renderPreview();
+    }
+
+    function setEditorTab(tab) {
+      currentEditorTab = tab;
+      ['profile', 'experience', 'projects', 'skills', 'raw'].forEach(t => {
+        const el = document.getElementById('etab-' + t);
+        if (t === tab) {
+          el.className = "px-3 py-2 rounded-t border-b-2 border-execAccent text-execText font-semibold bg-[#EFECE6]";
+        } else {
+          el.className = "px-3 py-2 rounded-t border-b-2 border-transparent text-execSecondary hover:text-execText";
+        }
+      });
+      renderEditor();
+    }
+
+    // =========================================================================
+    // 3. LEFT PANE EDITOR RENDERER
+    // =========================================================================
+    function renderEditor() {
+      const container = document.getElementById('editor-content');
+      if (!container) return;
+
+      if (currentEditorTab === 'profile') {
+        const p = state.profile;
+        container.innerHTML = `
+          <div class="space-y-3">
+            <div class="p-3 rounded bg-white border border-execBorder text-xs text-execSecondary">
+              <strong class="text-execText">Adding Images Later:</strong> Leave the Photo URL blank for a clean executive monogram, or paste an image path (e.g., <code class="text-execAccent">./images/kumar.jpg</code>) anytime in the future.
+            </div>
+            ${editorInput('Full Name', p.name, 'profile.name')}
+            ${editorInput('Title / Headline', p.title, 'profile.title')}
+            ${editorInput('Profile Photo URL / Path (Optional — Add Later)', p.avatar || '', 'profile.avatar', 'e.g., ./images/profile.jpg or https://...')}
+            ${editorInput('Technical Tagline', p.tagline, 'profile.tagline')}
+            <div class="grid grid-cols-2 gap-2">
+              ${editorInput('Email', p.email, 'profile.email')}
+              ${editorInput('Phone', p.phone, 'profile.phone')}
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              ${editorInput('Location', p.location, 'profile.location')}
+              ${editorInput('LinkedIn', p.linkedin, 'profile.linkedin')}
+            </div>
+            ${editorInput('Top Certification Badge', p.website, 'profile.website')}
+            <div>
+              <label class="block text-[11px] font-mono uppercase text-execSecondary mb-1">Executive Summary</label>
+              <textarea oninput="updateField('profile.summary', this.value)" rows="4" class="w-full bg-white border border-execBorder rounded p-2.5 text-xs text-execText focus:border-execAccent focus:outline-none">${escapeHtml(p.summary)}</textarea>
+            </div>
+          </div>
+        `;
+      } else if (currentEditorTab === 'experience') {
+        container.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs text-execSecondary">Check/uncheck roles to tailor your shared CV.</span>
+            <button onclick="addExperience()" class="px-2.5 py-1 bg-execText text-white font-medium rounded text-xs">+ Add Role</button>
+          </div>
+          <div class="space-y-4">
+            ${state.experience.map((exp, idx) => `
+              <div class="p-3 rounded border ${exp.included ? 'border-execBorder bg-white' : 'border-execBorder/50 bg-white/40 opacity-60'} space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" ${exp.included ? 'checked' : ''} onchange="toggleExp(${idx}, this.checked)" class="rounded accent-[#B08D57] w-4 h-4" />
+                    <span class="text-xs font-mono ${exp.included ? 'text-execAccent font-semibold' : 'text-execSecondary'}">${exp.included ? 'INCLUDED IN CV' : 'HIDDEN'}</span>
+                  </label>
+                  <button onclick="removeExp(${idx})" class="text-xs text-execSecondary hover:text-red-600">Delete</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input value="${escapeAttr(exp.role)}" oninput="updateExp(${idx}, 'role', this.value)" placeholder="Role" class="bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execText" />
+                  <input value="${escapeAttr(exp.company)}" oninput="updateExp(${idx}, 'company', this.value)" placeholder="Company" class="bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execText" />
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input value="${escapeAttr(exp.period)}" oninput="updateExp(${idx}, 'period', this.value)" placeholder="Period" class="bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execSecondary font-mono" />
+                  <input value="${escapeAttr(exp.metrics)}" oninput="updateExp(${idx}, 'metrics', this.value)" placeholder="Key Scope" class="bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execAccent font-mono" />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-mono uppercase text-execSecondary mb-1">Highlights (One per line)</label>
+                  <textarea oninput="updateExpHighlights(${idx}, this.value)" rows="4" class="w-full bg-execBg border border-execBorder rounded p-2 text-xs text-execText">${escapeHtml(exp.highlights.join('\n'))}</textarea>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (currentEditorTab === 'projects') {
+        container.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs text-execSecondary">Add project render images anytime later via URL or folder path.</span>
+            <button onclick="addProject()" class="px-2.5 py-1 bg-execText text-white font-medium rounded text-xs">+ Add Project</button>
+          </div>
+          <div class="space-y-4">
+            ${state.projects.map((proj, idx) => `
+              <div class="p-3 rounded border ${proj.included ? 'border-execBorder bg-white' : 'border-execBorder/50 bg-white/40 opacity-60'} space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" ${proj.included ? 'checked' : ''} onchange="toggleProj(${idx}, this.checked)" class="rounded accent-[#B08D57] w-4 h-4" />
+                    <span class="text-xs font-mono ${proj.included ? 'text-execAccent font-semibold' : 'text-execSecondary'}">${proj.included ? 'VISIBLE' : 'HIDDEN'}</span>
+                  </label>
+                  <button onclick="removeProj(${idx})" class="text-xs text-execSecondary hover:text-red-600">Delete</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <input value="${escapeAttr(proj.name)}" oninput="updateProj(${idx}, 'name', this.value)" placeholder="Project Name" class="bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execText font-semibold" />
+                  <input value="${escapeAttr(proj.metric)}" oninput="updateProj(${idx}, 'metric', this.value)" placeholder="LOD / Metric" class="bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execAccent font-mono" />
+                </div>
+                <input value="${escapeAttr(proj.category)}" oninput="updateProj(${idx}, 'category', this.value)" placeholder="Category" class="w-full bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execSecondary" />
+                <input value="${escapeAttr(proj.image \vert{}\vert{} '')}" oninput="updateProj(${idx}, 'image', this.value)" placeholder="Project Render Image URL / Path (Leave empty for wireframe)" class="w-full bg-execBg border border-execAccent/40 rounded px-2 py-1.5 text-xs text-execText font-mono" />
+                <input value="${escapeAttr(proj.tags.join(', '))}" oninput="updateProjTags(${idx}, this.value)" placeholder="Tags (comma separated)" class="w-full bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execSecondary font-mono" />
+                <textarea oninput="updateProj(${idx}, 'description', this.value)" rows="2" class="w-full bg-execBg border border-execBorder rounded p-2 text-xs text-execText">${escapeHtml(proj.description)}</textarea>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (currentEditorTab === 'skills') {
+        container.innerHTML = `
+          <div class="space-y-4">
+            <div class="space-y-3">
+              <span class="text-xs font-mono uppercase text-execAccent font-semibold">Core BIM & MEP Competencies</span>
+              ${state.skills.map((sk, idx) => `
+                <div class="p-3 rounded bg-white border border-execBorder space-y-2">
+                  <div class="flex justify-between items-center gap-2">
+                    <input value="${escapeAttr(sk.category)}" oninput="updateSkill(${idx}, 'category', this.value)" class="bg-execBg border border-execBorder rounded px-2 py-1 text-xs text-execText flex-1" />
+                    <input type="number" min="10" max="100" value="${sk.level}" oninput="updateSkill(${idx}, 'level', Number(this.value))" class="w-16 bg-execBg border border-execBorder rounded px-2 py-1 text-xs text-execAccent font-mono" />
+                  </div>
+                  <input value="${escapeAttr(sk.items.join(', '))}" oninput="updateSkillItems(${idx}, this.value)" class="w-full bg-execBg border border-execBorder rounded px-2 py-1.5 text-xs text-execSecondary font-mono" />
+                </div>
+              `).join('')}
+            </div>
+            <div>
+              <label class="block text-xs font-mono uppercase text-execAccent font-semibold mb-1">Awards & Certifications (One per line)</label>
+              <textarea oninput="updateCerts(this.value)" rows="6" class="w-full bg-white border border-execBorder rounded p-2.5 text-xs text-execText font-mono">${escapeHtml(state.awardsAndCerts.join('\n'))}</textarea>
+            </div>
+          </div>
+        `;
+      } else if (currentEditorTab === 'raw') {
+        container.innerHTML = `
+          <div class="space-y-2">
+            <p class="text-xs text-execSecondary">Master <code class="text-execAccent">resume.json</code> data:</p>
+            <textarea id="raw-json-area" rows="22" class="w-full bg-white border border-execBorder rounded p-3 text-xs font-mono text-execText focus:outline-none">${escapeHtml(JSON.stringify(state, null, 2))}</textarea>
+            <button onclick="applyRawJson()" class="w-full py-2 bg-execText text-white font-semibold rounded text-xs">Apply JSON Changes</button>
+          </div>
+        `;
+      }
+    }
+
+    function editorInput(label, val, path, placeholder = '') {
+      return `
+        <div>
+          <label class="block text-[11px] font-mono uppercase text-execSecondary mb-1">${label}</label>
+          <input type="text" value="${escapeAttr(val)}" placeholder="${escapeAttr(placeholder)}" oninput="updateField('${path}', this.value)" class="w-full bg-white border border-execBorder rounded px-2.5 py-1.5 text-xs text-execText focus:border-execAccent focus:outline-none" />
+        </div>
+      `;
+    }
+
+    function updateField(path, val) {
+      const parts = path.split('.');
+      state[parts[0]][parts[1]] = val;
+      saveState();
+    }
+    function toggleExp(idx, checked) { state.experience[idx].included = checked; saveState(); renderEditor(); }
+    function updateExp(idx, key, val) { state.experience[idx][key] = val; saveState(); }
+    function updateExpHighlights(idx, val) { state.experience[idx].highlights = val.split('\n').filter(Boolean); saveState(); }
+    function addExperience() {
+      state.experience.unshift({
+        id: 'exp-' + Date.now(),
+        included: true,
+        role: "Senior BIM Specialist",
+        company: "Company Name",
+        period: "2026 – Present",
+        location: "Chennai, India",
+        metrics: "LOD 400 | MEP Coordination",
+        highlights: ["Led multidisciplinary MEP BIM coordination and Dynamo workflow automation."]
+      });
+      saveState(); renderEditor();
+    }
+    function removeExp(idx) { state.experience.splice(idx, 1); saveState(); renderEditor(); }
+
+    function toggleProj(idx, checked) { state.projects[idx].included = checked; saveState(); renderEditor(); }
+    function updateProj(idx, key, val) { state.projects[idx][key] = val; saveState(); }
+    function updateProjTags(idx, val) { state.projects[idx].tags = val.split(',').map(s => s.trim()).filter(Boolean); saveState(); }
+    function addProject() {
+      state.projects.unshift({
+        id: 'proj-' + Date.now(),
+        included: true,
+        name: "New MEP BIM Project",
+        category: "BIM Coordination & Clash Detection",
+        tags: ["LOD 350", "Revit", "Revizto"],
+        metric: "LOD 350",
+        image: "",
+        description: "Multidisciplinary MEP model coordination and clash resolution.",
+        link: ""
+      });
+      saveState(); renderEditor();
+    }
+    function removeProj(idx) { state.projects.splice(idx, 1); saveState(); renderEditor(); }
+
+    function updateSkill(idx, key, val) { state.skills[idx][key] = val; saveState(); }
+    function updateSkillItems(idx, val) { state.skills[idx].items = val.split(',').map(s => s.trim()).filter(Boolean); saveState(); }
+    function updateCerts(val) { state.awardsAndCerts = val.split('\n').filter(Boolean); saveState(); }
+    function applyRawJson() {
+      try {
+        state = JSON.parse(document.getElementById('raw-json-area').value);
+        saveState();
+        showToast('Updated from Raw JSON');
+      } catch (e) {
+        alert('Invalid JSON: ' + e.message);
+      }
+    }
+
+    // Helper: Render Project Image OR Architectural Wireframe Placeholder
+    function renderProjectVisual(pr) {
+      if (pr.image && pr.image.trim() !== '') {
+        return `
+          <div class="h-40 w-full overflow-hidden border-b border-execBorder bg-[#EAE6DF] relative">
+            <img src="${escapeAttr(pr.image)}" alt="${escapeAttr(pr.name)}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<div class=\\'p-4 text-xs font-mono text-execSecondary\\'>Image not found</div>'" />
+            <span class="absolute top-3 right-3 text-[11px] font-mono px-2.5 py-0.5 bg-execText text-white">${escapeHtml(pr.metric)}</span>
+          </div>
+        `;
+      }
+      // Executive Architectural Wireframe SVG Placeholder when no image is added yet
+      return `
+        <div class="h-36 w-full border-b border-execBorder bg-[#EFECE6] relative overflow-hidden flex items-center justify-center">
+          <svg class="w-full h-full opacity-40" viewBox="0 0 400 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="30" x2="400" y2="30" stroke="#B08D57" stroke-width="0.6" stroke-dasharray="3 3"/>
+            <line x1="0" y1="75" x2="400" y2="75" stroke="#B08D57" stroke-width="0.6"/>
+            <line x1="0" y1="120" x2="400" y2="120" stroke="#B08D57" stroke-width="0.6" stroke-dasharray="3 3"/>
+            <line x1="80" y1="0" x2="80" y2="150" stroke="#6B6B65" stroke-width="0.5" stroke-dasharray="3 3"/>
+            <line x1="200" y1="0" x2="200" y2="150" stroke="#B08D57" stroke-width="0.6"/>
+            <line x1="320" y1="0" x2="320" y2="150" stroke="#6B6B65" stroke-width="0.5" stroke-dasharray="3 3"/>
+            <polygon points="200,22 265,55 265,112 200,132 135,112 135,55" stroke="#1D1D1B" stroke-width="1.2" fill="rgba(176,141,87,0.08)"/>
+            <line x1="135" y1="55" x2="265" y2="112" stroke="#B08D57" stroke-width="0.8"/>
+            <line x1="265" y1="55" x2="135" y2="112" stroke="#B08D57" stroke-width="0.8"/>
+          </svg>
+          <div class="absolute bottom-2.5 left-3 text-[10px] font-mono uppercase tracking-widest text-execSecondary">
+            BIM WIREFRAME // ${escapeHtml(pr.category)}
+          </div>
+          <span class="absolute top-3 right-3 text-[11px] font-mono px-2.5 py-0.5 bg-execText text-execAccent border border-execAccent/40 font-medium">${escapeHtml(pr.metric)}</span>
+        </div>
+      `;
+    }
+
+    // Helper: Render Profile Avatar OR Monogram Crest
+    function renderAvatar(p) {
+      if (p.avatar && p.avatar.trim() !== '') {
+        return `<img src="${escapeAttr(p.avatar)}" alt="${escapeAttr(p.name)}" class="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover border-2 border-execAccent shadow-md shrink-0" />`;
+      }
+      const initials = (p.name || 'KS').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      return `
+        <div class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-execText text-execAccent border-2 border-execAccent flex items-center justify-center font-serif text-2xl md:text-3xl font-bold shrink-0 shadow-sm">
+          ${escapeHtml(initials)}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 4. TEMPLATE RENDERER (EXECUTIVE 3D, TECHNICAL DOSSIER, A4 PRINT CV)
+    // =========================================================================
+    function renderPreview() {
+      if (threeCleanup) { threeCleanup(); threeCleanup = null; }
+      const mount = document.getElementById('portfolio-mount');
+      const p = state.profile;
+      const visibleExp = state.experience.filter(e => e.included);
+      const visibleProj = state.projects.filter(pr => pr.included);
+
+      if (currentTemplate === '3d-showcase') {
+        mount.innerHTML = `
+          <div class="relative min-h-full bg-execBg text-execText">
+            <!-- Executive 3D Hero -->
+            <section class="relative overflow-hidden border-b border-execBorder min-h-[430px] flex items-center bg-gradient-to-b from-white/60 to-execBg">
+              <div id="three-canvas-container" class="absolute inset-0 z-0 opacity-90"></div>
+              <div class="relative z-10 max-w-5xl mx-auto px-6 py-14 w-full pointer-events-none">
+                <div class="flex items-center gap-4 mb-5">
+                  ${renderAvatar(p)}
+                  <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-execAccent/40 text-execAccent text-[11px] font-mono uppercase tracking-widest mb-2">
+                      <span>◆ ${escapeHtml(p.website)}</span>
+                      <span>•</span>
+                      <span>8+ YEARS MEP BIM</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-serif font-bold tracking-tight text-execText">${escapeHtml(p.name)}</h1>
+                    <p class="text-sm md:text-base font-mono uppercase tracking-widest text-execAccent font-semibold mt-0.5">${escapeHtml(p.title)}</p>
+                  </div>
+                </div>
+
+                <p class="text-xs font-mono text-execSecondary uppercase tracking-wider mb-4">${escapeHtml(p.tagline)}</p>
+
+                <p class="max-w-2xl text-sm text-execText leading-relaxed bg-white/90 backdrop-blur-md p-5 border-l-4 border-execAccent shadow-sm">
+                  ${escapeHtml(p.summary)}
+                </p>
+
+                <div class="mt-6 flex flex-wrap gap-2.5 text-xs font-mono pointer-events-auto">
+                  <a href="mailto:${escapeAttr(p.email)}" class="px-4 py-2 bg-execText text-white font-medium hover:bg-execAccent transition">✉ ${escapeHtml(p.email)}</a>
+                  <span class="px-3.5 py-2 bg-white border border-execBorder text-execText">☎ ${escapeHtml(p.phone)}</span>
+                  <span class="px-3.5 py-2 bg-white border border-execBorder text-execSecondary">📍 ${escapeHtml(p.location)}</span>
+                  <a href="https://${escapeAttr(p.linkedin)}" target="_blank" class="px-3.5 py-2 bg-white border border-execAccent/50 text-execAccent hover:bg-execAccent hover:text-white transition">in/${escapeHtml(p.linkedin.split('/').pop())}</a>
+                </div>
+              </div>
+            </section>
+
+            <div class="max-w-5xl mx-auto px-6 py-12 space-y-16">
+              <!-- International BIM Projects Grid -->
+              <section>
+                <div class="flex items-end justify-between border-b border-execBorder pb-3 mb-8">
+                  <div>
+                    <span class="text-[11px] font-mono uppercase tracking-widest text-execAccent">01 // PORTFOLIO</span>
+                    <h2 class="text-3xl font-serif font-bold text-execText mt-0.5">Selected International BIM Projects</h2>
+                  </div>
+                  <span class="text-xs font-mono text-execSecondary">${visibleProj.length} Featured Deliverables</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  ${visibleProj.map(pr => `
+                    <div class="exec-card bg-white border border-execBorder flex flex-col justify-between overflow-hidden">
+                      <div>
+                        ${renderProjectVisual(pr)}
+                        <div class="p-5">
+                          <h3 class="text-lg font-serif font-bold text-execText">${escapeHtml(pr.name)}</h3>
+                          <p class="text-xs text-execSecondary mt-2 leading-relaxed">${escapeHtml(pr.description)}</p>
+                        </div>
+                      </div>
+                      <div class="px-5 pb-4 pt-3 border-t border-execBorder/60 flex flex-wrap gap-1.5">
+                        ${pr.tags.map(t => `<span class="text-[10px] font-mono px-2 py-0.5 bg-execBg text-execSecondary border border-execBorder">${escapeHtml(t)}</span>`).join('')}
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </section>
+
+              <!-- Career Chronology -->
+              <section>
+                <div class="border-b border-execBorder pb-3 mb-8">
+                  <span class="text-[11px] font-mono uppercase tracking-widest text-execAccent">02 // EXPERIENCE</span>
+                  <h2 class="text-3xl font-serif font-bold text-execText mt-0.5">Professional Career</h2>
+                </div>
+                <div class="space-y-6 border-l-2 border-execAccent/50 pl-6 ml-2">
+                  ${visibleExp.map(ex => `
+                    <div class="relative">
+                      <div class="w-3 h-3 rounded-full bg-execAccent border-2 border-execBg absolute -left-[31px] top-2"></div>
+                      <div class="p-6 bg-white border border-execBorder">
+                        <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-execBorder pb-3">
+                          <div>
+                            <h3 class="text-xl font-serif font-bold text-execText">${escapeHtml(ex.role)}</h3>
+                            <p class="text-xs font-mono uppercase tracking-wider text-execAccent font-semibold mt-0.5">${escapeHtml(ex.company)} • <span class="text-execSecondary">${escapeHtml(ex.location)}</span></p>
+                          </div>
+                          <div class="text-right">
+                            <span class="text-xs font-mono px-2.5 py-1 bg-execBg border border-execBorder text-execText">${escapeHtml(ex.period)}</span>
+                            <div class="text-[11px] font-mono text-execSecondary mt-1">${escapeHtml(ex.metrics)}</div>
+                          </div>
+                        </div>
+                        <ul class="mt-4 space-y-2 text-xs text-execText leading-relaxed">
+                          ${ex.highlights.map(h => `<li class="flex gap-2.5"><span class="text-execAccent">▪</span><span>${escapeHtml(h)}</span></li>`).join('')}
+                        </ul>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </section>
+
+              <!-- Competencies & Recognition -->
+              <section class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div>
+                  <div class="border-b border-execBorder pb-2 mb-5">
+                    <span class="text-[11px] font-mono uppercase tracking-widest text-execAccent">03 // TECHNICAL MATRIX</span>
+                    <h2 class="text-2xl font-serif font-bold text-execText">Core BIM & CAD Expertise</h2>
+                  </div>
+                  <div class="space-y-3.5">
+                    ${state.skills.map(s => `
+                      <div class="p-4 bg-white border border-execBorder">
+                        <div class="flex justify-between text-xs font-mono mb-1.5">
+                          <span class="text-execText font-semibold">${escapeHtml(s.category)}</span>
+                          <span class="text-execAccent font-semibold">${s.level}%</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-execBg overflow-hidden mb-3">
+                          <div class="h-full bg-execAccent" style="width:${s.level}%"></div>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                          ${s.items.map(i => `<span class="text-[11px] font-mono px-2 py-0.5 bg-execBg text-execSecondary border border-execBorder">${escapeHtml(i)}</span>`).join('')}
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <div class="space-y-8">
+                  <div>
+                    <div class="border-b border-execBorder pb-2 mb-5">
+                      <span class="text-[11px] font-mono uppercase tracking-widest text-execAccent">04 // HONORS</span>
+                      <h2 class="text-2xl font-serif font-bold text-execText">Awards & Certifications</h2>
+                    </div>
+                    <div class="space-y-2.5">
+                      ${state.awardsAndCerts.map(c => `
+                        <div class="p-3.5 bg-white border border-execBorder flex items-start gap-3 text-xs text-execText">
+                          <span class="text-execAccent font-mono text-sm">◆</span>
+                          <span>${escapeHtml(c)}</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                  <div>
+                    <div class="border-b border-execBorder pb-2 mb-4">
+                      <span class="text-[11px] font-mono uppercase tracking-widest text-execAccent">05 // EDUCATION</span>
+                      <h2 class="text-2xl font-serif font-bold text-execText">Academic Credentials</h2>
+                    </div>
+                    ${state.education.map(ed => `
+                      <div class="p-4 bg-white border border-execBorder">
+                        <div class="text-sm font-bold text-execText">${escapeHtml(ed.degree)}</div>
+                        <div class="text-xs text-execAccent font-medium mt-0.5">${escapeHtml(ed.institution)}</div>
+                        <div class="text-xs font-mono text-execSecondary mt-1">${escapeHtml(ed.year)}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        `;
+        initThreeScene();
+
+      } else if (currentTemplate === 'blueprint') {
+        mount.innerHTML = `
+          <div class="exec-blueprint-grid min-h-full p-6 md:p-10 text-execText font-mono">
+            <div class="max-w-5xl mx-auto border-2 border-execText bg-white/95 p-6 md:p-10 shadow-xl space-y-8">
+              <!-- Architectural Drawing Title Block -->
+              <div class="border-b-2 border-execText pb-6 flex flex-col md:flex-row justify-between gap-4">
+                <div class="flex items-center gap-4">
+                  ${renderAvatar(p)}
+                  <div>
+                    <div class="text-[11px] text-execAccent uppercase tracking-widest font-semibold">EXECUTIVE TECHNICAL DOSSIER // BIM MEP</div>
+                    <h1 class="text-3xl md:text-4xl font-serif font-bold text-execText mt-1">${escapeHtml(p.name)}</h1>
+                    <div class="text-xs text-execSecondary mt-1">${escapeHtml(p.title)} — ${escapeHtml(p.tagline)}</div>
+                  </div>
+                </div>
+                <div class="border border-execBorder p-3 text-xs space-y-1 bg-execBg shrink-0">
+                  <div><span class="text-execAccent font-semibold">LOC:</span> ${escapeHtml(p.location)}</div>
+                  <div><span class="text-execAccent font-semibold">TEL:</span> ${escapeHtml(p.phone)}</div>
+                  <div><span class="text-execAccent font-semibold">EML:</span> ${escapeHtml(p.email)}</div>
+                  <div><span class="text-execAccent font-semibold">CERT:</span> ${escapeHtml(p.website)}</div>
+                </div>
+              </div>
+
+              <div class="text-xs leading-relaxed text-execText border-l-4 border-execAccent p-4 bg-execBg">
+                <div class="text-execAccent font-bold mb-1">[SECTION 01 // EXECUTIVE BRIEF]</div>
+                ${escapeHtml(p.summary)}
+              </div>
+
+              <!-- Project Schedule -->
+              <div>
+                <div class="text-execText font-bold text-sm mb-3 border-b border-execBorder pb-1">[SECTION 02 // INTERNATIONAL BIM PROJECT SCHEDULE]</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  ${visibleProj.map((pr, i) => `
+                    <div class="border border-execBorder p-4 bg-execBg/60">
+                      <div class="flex justify-between text-xs text-execSecondary border-b border-execBorder pb-1 mb-2">
+                        <span>DWG-0${i+1} //${escapeHtml(pr.category)}</span>
+                        <span class="font-bold text-execAccent">${escapeHtml(pr.metric)}</span>
+                      </div>
+                      <div class="text-base font-bold text-execText font-serif">${escapeHtml(pr.name)}</div>
+                      <p class="text-xs text-execSecondary mt-1.5 font-sans">${escapeHtml(pr.description)}</p>
+                      <div class="mt-3 flex flex-wrap gap-1.5">
+                        ${pr.tags.map(t => `<span class="text-[10px] px-1.5 py-0.5 border border-execBorder bg-white text-execText">${escapeHtml(t)}</span>`).join('')}
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- Experience Log -->
+              <div>
+                <div class="text-execText font-bold text-sm mb-3 border-b border-execBorder pb-1">[SECTION 03 // RECORD OF EMPLOYMENT]</div>
+                <div class="space-y-4">
+                  ${visibleExp.map(ex => `
+                    <div class="border border-execBorder p-4 bg-execBg/60">
+                      <div class="flex flex-wrap justify-between items-baseline border-b border-execBorder pb-2 mb-2">
+                        <div class="text-execText font-bold text-sm">${escapeHtml(ex.role)} —${escapeHtml(ex.company)}</div>
+                        <div class="text-xs text-execAccent font-semibold">${escapeHtml(ex.period)} \vert{}${escapeHtml(ex.location)}</div>
+                      </div>
+                      <ul class="space-y-1 text-xs text-execText font-sans">
+                        ${ex.highlights.map(h => `<li>▪ ${escapeHtml(h)}</li>`).join('')}
+                      </ul>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+      } else if (currentTemplate === 'ats-print') {
+        mount.innerHTML = `
+          <div class="bg-[#E5E0D8] min-h-full py-8 px-4 flex flex-col items-center">
+            <div class="no-print mb-4 flex items-center gap-3 bg-white border border-execBorder px-4 py-2 rounded-full shadow-sm">
+              <span class="text-xs text-execSecondary">Executive A4 Resume — Print Ready</span>
+              <button onclick="window.print()" class="px-3.5 py-1 bg-execText text-white font-medium rounded-full text-xs hover:bg-execAccent transition">Print / Save as PDF</button>
+            </div>
+
+            <div id="cv-print-sheet" class="bg-white text-execText w-full max-w-[210mm] min-h-[297mm] p-8 md:p-10 shadow-2xl border border-execBorder font-sans">
+              <div class="border-b-2 border-execText pb-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-2">
+                <div class="flex items-center gap-4">
+                  ${p.avatar ? `<img src="${escapeAttr(p.avatar)}" class="w-14 h-14 rounded-full object-cover border border-execAccent" />` : ''}
+                  <div>
+                    <h1 class="text-3xl font-serif font-bold uppercase tracking-tight text-execText">${escapeHtml(p.name)}</h1>
+                    <div class="text-xs font-mono uppercase tracking-widest font-semibold text-execAccent mt-0.5">${escapeHtml(p.title)}</div>
+                  </div>
+                </div>
+                <div class="text-xs text-execSecondary md:text-right space-y-0.5 font-mono">
+                  <div>${escapeHtml(p.email)} | ${escapeHtml(p.phone)}</div>
+                  <div>${escapeHtml(p.location)} | ${escapeHtml(p.linkedin)}</div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h2 class="text-[11px] font-mono font-bold uppercase tracking-widest text-execAccent border-b border-execBorder pb-1">Executive Summary</h2>
+                <p class="text-xs text-execText mt-1.5 leading-relaxed">${escapeHtml(p.summary)}</p>
+              </div>
+
+              <div class="mt-5">
+                <h2 class="text-[11px] font-mono font-bold uppercase tracking-widest text-execAccent border-b border-execBorder pb-1">Professional Experience</h2>
+                <div class="space-y-3.5 mt-2">
+                  ${visibleExp.map(ex => `
+                    <div>
+                      <div class="flex justify-between items-baseline">
+                        <div class="text-sm font-bold text-execText">${escapeHtml(ex.role)} — <span class="font-normal text-execSecondary">${escapeHtml(ex.company)},${escapeHtml(ex.location)}</span></div>
+                        <div class="text-xs font-mono text-execAccent font-semibold">${escapeHtml(ex.period)}</div>
+                      </div>
+                      <ul class="list-disc list-inside text-xs text-execText mt-1 space-y-0.5">
+                        ${ex.highlights.map(h => `<li>${escapeHtml(h)}</li>`).join('')}
+                      </ul>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="mt-5">
+                <h2 class="text-[11px] font-mono font-bold uppercase tracking-widest text-execAccent border-b border-execBorder pb-1">Selected International BIM Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 mt-2">
+                  ${visibleProj.map(pr => `
+                    <div class="border border-execBorder p-2.5 bg-execBg/30">
+                      <div class="flex justify-between text-xs font-bold text-execText">
+                        <span>${escapeHtml(pr.name)}</span>
+                        <span class="text-execAccent font-mono">${escapeHtml(pr.metric)}</span>
+                      </div>
+                      <p class="text-[11px] text-execSecondary mt-0.5">${escapeHtml(pr.description)}</p>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <h2 class="text-[11px] font-mono font-bold uppercase tracking-widest text-execAccent border-b border-execBorder pb-1">Core Technical Competencies</h2>
+                  <div class="mt-1.5 space-y-1 text-xs text-execText">
+                    ${state.skills.map(s => `<div><strong>${escapeHtml(s.category)}:</strong> <span class="text-execSecondary">${escapeHtml(s.items.join(', '))}</span></div>`).join('')}
+                  </div>
+                </div>
+                <div>
+                  <h2 class="text-[11px] font-mono font-bold uppercase tracking-widest text-execAccent border-b border-execBorder pb-1">Education, Awards & Certifications</h2>
+                  <div class="mt-1.5 space-y-1 text-xs text-execText">
+                    ${state.education.map(ed => `<div><strong>${escapeHtml(ed.degree)}</strong> — ${escapeHtml(ed.institution)} (${escapeHtml(ed.year)})</div>`).join('')}
+                    <ul class="list-disc list-inside mt-1 space-y-0.5 text-[11px] text-execSecondary">
+                      ${state.awardsAndCerts.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // =========================================================================
+    // 5. THREE.JS EXECUTIVE GOLD & CHARCOAL 3D BIM WIREFRAME
+    // =========================================================================
+    function initThreeScene() {
+      const container = document.getElementById('three-canvas-container');
+      if (!container || typeof THREE === 'undefined') return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.z = 6;
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.innerHTML = '';
+      container.appendChild(renderer.domElement);
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      // Outer Architectural Cage in Executive Gold (#B08D57)
+      const geo1 = new THREE.BoxGeometry(2.7, 2.7, 2.7);
+      const edges1 = new THREE.EdgesGeometry(geo1);
+      const line1 = new THREE.LineSegments(edges1, new THREE.LineBasicMaterial({ color: 0xB08D57, transparent: true, opacity: 0.65 }));
+      group.add(line1);
+
+      // Inner BIM Coordination Core in Charcoal (#1D1D1B)
+      const geo2 = new THREE.OctahedronGeometry(1.55, 1);
+      const mat2 = new THREE.MeshBasicMaterial({ color: 0x1D1D1B, wireframe: true, transparent: true, opacity: 0.18 });
+      const mesh2 = new THREE.Mesh(geo2, mat2);
+      group.add(mesh2);
+
+      group.position.x = 2.1;
+
+      let animId;
+      function animate() {
+        animId = requestAnimationFrame(animate);
+        line1.rotation.x += 0.0025;
+        line1.rotation.y += 0.004;
+        mesh2.rotation.x -= 0.003;
+        mesh2.rotation.y -= 0.0025;
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      const onResize = () => {
+        if (!container) return;
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      };
+      window.addEventListener('resize', onResize);
+
+      threeCleanup = () => {
+        cancelAnimationFrame(animId);
+        window.removeEventListener('resize', onResize);
+        renderer.dispose();
+      };
+    }
+
+    // =========================================================================
+    // 6. UTILITIES & INITIALIZATION
+    // =========================================================================
+    function downloadJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const a = document.createElement('a');
+      a.href = dataStr;
+      a.download = "resume.json";
+      a.click();
+      showToast('Downloaded resume.json');
+    }
+
+    function copyShareLink() {
+      const url = new URL(window.location.href);
+      url.searchParams.set('view', 'public');
+      url.searchParams.set('template', currentTemplate);
+      navigator.clipboard.writeText(url.toString());
+      showToast('Copied clean share link: ?view=public&template=' + currentTemplate);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3200);
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    function escapeAttr(str) {
+      return String(str ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    async function initPortfolio() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try { state = JSON.parse(saved); } catch (e) {}
+      }
+      try {
+        const response = await fetch('./resume.json?t=' + new Date().getTime());
+        if (response.ok) {
+          state = await response.json();
+        }
+      } catch (err) {}
+      applyUrlParams();
+      setAppMode(appMode);
+      setTemplate(currentTemplate);
+      renderEditor();
+    }
+
+    initPortfolio();
+  </script>
+</body>
+</html>
